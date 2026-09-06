@@ -1,0 +1,8 @@
+torch==2.5.1
+transformers==5.13.0
+peft==0.20.0
+accelerate
+nltk
+pronouncing
+bert-score
+numpy

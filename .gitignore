@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.bak*
+results_*/
+metrical_*/
+cand_dump*
+*.pt
+*.bin
+*.safetensors
+lora_out/
