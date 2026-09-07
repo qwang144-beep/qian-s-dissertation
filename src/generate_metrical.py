@@ -140,6 +140,16 @@ SYSTEM_PROMPT = (
     "Output only the single line, with no quotes, no numbering, no commentary."
 )
 
+SYSTEM_PROMPT_STRICT_VARY = (
+    "You are a songwriter reconstructing a song one line at a time from a fixed "
+    "vocabulary. Every line you write must (1) draw its words from the given "
+    "vocabulary (you may inflect the stems), (2) fit the song's style and mood, "
+    "and (3) contain EXACTLY the requested number of syllables. "
+    "Vary your sentence structure: do not reuse the grammatical pattern or the "
+    "opening words of the previous lines. "
+    "Output only the single line, with no quotes, no numbering, no commentary."
+)
+
 SYSTEM_PROMPT_RELAXED = (
     "You are a songwriter reconstructing a song one line at a time from a fixed "
     "vocabulary. Every line you write must (1) draw its words from the given "
@@ -356,7 +366,8 @@ def reconstruct_song(ctx: SongCtx, skeleton: list[dict], gen,
                      relax: bool = False,
                      anti_template: bool = False,
                      no_syllable: bool = False,
-                     no_select: bool = False) -> tuple[list[str], list[LineChoice], list[dict]]:
+                     no_select: bool = False,
+                     vary_system: bool = False) -> tuple[list[str], list[LineChoice], list[dict]]:
     prev_lines: list[str] = []
     choices: list[LineChoice] = []
     dump: list[dict] = []                        # all candidates + choice per line, for offline ablation/weight tuning
@@ -369,6 +380,8 @@ def reconstruct_song(ctx: SongCtx, skeleton: list[dict], gen,
             sys_prompt = SYSTEM_PROMPT_RHYME
         elif relax:
             sys_prompt = SYSTEM_PROMPT_RELAXED
+        elif vary_system:
+            sys_prompt = SYSTEM_PROMPT_STRICT_VARY
         else:
             sys_prompt = SYSTEM_PROMPT
         raw_cands = gen.sample(sys_prompt, user, n_candidates)
@@ -430,6 +443,9 @@ def main():
                     help="scorer-fix: same-stem terminal words score sim 0 (rhyming requires a different word)")
     ap.add_argument("--tail-window", type=int, default=0,
                     help="scorer-fix: look-back window for the terminal-reuse term in L_rep (0 = off)")
+    ap.add_argument("--vary-system", action="store_true",
+                    help="strict prompt + system-level 'vary your sentence structure' sentence "
+                         "(the vary run of the report)")
     
     args = ap.parse_args()
 
@@ -470,7 +486,8 @@ def main():
         lines, choices, dump = reconstruct_song(
             ctx, skeleton, gen, args.n_candidates, args.k_context, select_kwargs,
             relax=args.relax_syllable, anti_template=args.anti_template,
-            no_syllable=args.no_syllable, no_select=args.no_select)
+            no_syllable=args.no_syllable, no_select=args.no_select,
+            vary_system=args.vary_system)
         with open(out_path, "w", encoding="utf-8") as f:
             f.write("\n".join(lines) + "\n")
         if args.dump_candidates:                 # append one song's candidate dump
