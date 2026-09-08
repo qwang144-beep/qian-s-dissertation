@@ -48,6 +48,7 @@ with `src/build_prompts.py` (evaluation set: seed 42 defaults; training set:
 | Ch.4 | Rhyme-only | `runs/run_rhyme2.sh` | same |
 | Ch.4 scorer-fix | Strict-fix | `train/run_strict_fix.sh` | `train/run_eval_strictfix.sh` |
 | Ch.4 distillation | Tuned / Tuned+Select | `train/run_tuned_noselect.sh`, `train/run_tuned_select.sh` | `train/run_eval_tuned.sh` |
+| Ch.4 2x2 | Vary | runs/run_vary.sh | runs/eval_vary.sh |
 
 Training data and the LoRA run: `train/make_train_set.sh` ->
 `train/run_traingen.sh` -> `train/build_sft_data.py` -> `train/run_lora.sh`.
