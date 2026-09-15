@@ -5,8 +5,6 @@
 #SBATCH --time=08:00:00
 #SBATCH --output=evalvary_%j.out
 #SBATCH --error=evalvary_%j.err
-#SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=qwang144@sheffield.ac.uk
 # CPU evaluation of the vary run + bootstrap against strict AND anti + song-level measures
 set -euo pipefail
 PY=/users/smp23qw/.conda/envs/lycon/bin/python

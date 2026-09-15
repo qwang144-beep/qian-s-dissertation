@@ -7,8 +7,6 @@
 #SBATCH --time=12:00:00
 #SBATCH --output=vary300_%j.out
 #SBATCH --error=vary300_%j.err
-#SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=qwang144@sheffield.ac.uk
 # ---------------------------------------------------------------------------
 # A2 step 4: the 2x2 control run.
 #   exact syllable target (strict user prompt + w_count 3.0)

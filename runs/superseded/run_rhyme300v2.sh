@@ -16,4 +16,3 @@ export HF_HUB_DISABLE_XET=1
 cd /users/smp23qw/dissertation/lycon
 
 $PY src/generate_metrical.py --manifest prompts_300.jsonl --skeletons skeletons_300.jsonl --out-dir metrical_300_rhyme2 --n-candidates 8 --k-context 3 --no-syllable --anti-template --temperature 0.95 --w-count 0 --w-rhyme 3.0 --w-vocab 4.0 --w-rep 2.5 --resume --dump-candidates cand_dump_rhyme2.jsonl
-EOF
